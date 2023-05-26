@@ -2,8 +2,22 @@
 import './App.css';
 import Axios from 'axios'
 
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
+
+
 /*
      npm install axios
+     npm install @mui/icons-material
+     npm install @emotion/react
+     npm install @emotion/styled
+
+     https://mui.com/material-ui/react-table/
 */
 
 import {useState , useEffect} from 'react'
@@ -114,6 +128,7 @@ function App() {
 
 //https://www.geeksforgeeks.org/how-to-create-a-table-in-reactjs/
    function  List(props) {
+     let _sortedStudents = props.students.sort(  (a,b) =>( b.lname - a.lname  )    )
      return (
       <React.Fragment>
         <table>
@@ -122,15 +137,61 @@ function App() {
              <th>Email</th>
              <th>Password</th>
            </tr>
+            {
+
+                _sortedStudents?.map( item => ( 
+                   <tr>
+                     <td>{item.fname} - {item.lname} </td> <td> {item.email}</td> <td>{item.password} </td>
+                   </tr>
 
 
+                ) )
+            }
            
         </table>
 
       </React.Fragment>
 
-
      )
+   }
+
+//  https://mui.com/material-ui/react-table/
+   function ReactTable( props ) {
+    let _sortedStudents = props.students.sort(  (a,b) =>( b.lname - a.lname  )    )
+    let backgroundColor = 'inherit';
+       return (
+        <TableContainer component={Paper} sx = {{backgroundColor:"#7d67ae"}} >
+        <Table sx =  {{midWidth:1650 }} aria-label="simple table">
+           <TableHead>
+             <TableRow>
+             <TableCell align="right">  Name  </TableCell>
+             <TableCell align="right">  Email  </TableCell>
+             <TableCell align="right">  Password </TableCell>             
+            </TableRow>
+           </TableHead>
+
+           <TableBody>
+           {_sortedStudents.map((row) => (
+            <TableRow
+              key={row.fname}
+              sx={{ backgroundColor:"#7d67ae", '&:last-child td, &:last-child th': { border: 0  } }}
+            >
+              <TableCell component="th" scope="row">
+                {row.fname} {row.lname}
+              </TableCell>
+              <TableCell align="right">{row.email}</TableCell>
+              <TableCell align="right">{row.password}</TableCell>
+            </TableRow>
+          ))}
+           
+           </TableBody>
+
+
+        </Table>
+        
+        </TableContainer>
+
+       )
 
 
    }
@@ -206,9 +267,13 @@ function App() {
 
           <hr/>
           <h2>Database </h2>
+   {/*
           <StudentList />
           <hr/>
           <List students ={students}/>
+  */}
+          <p/>
+          <ReactTable students={students} />
 
           </div>
       </header>
