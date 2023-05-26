@@ -55,21 +55,20 @@ function App() {
 
  )
 
- 
+ let axiosConfiguration = {
+  headers:{
+          'Content-type' : 'application/json;charset=UTF-8',
+          "Access-Control-Allow-Origin" : "*"
+
+  }
+ }
 
  const CreateButton = (evt) => {
     
     console.log("Submit: " + fname + " " + lname + " " + email + " " + password )
-    let axiosConfig = {
-      headers:{
-              'Content-type' : 'application/json;charset=UTF-8',
-              "Access-Control-Allow-Origin" : "*"
 
-      }
-     }
-
-     const body = {fname:fname, lname:lname,email:email, password:password }
-     Axios.post('http://localhost:3001/api/create', body , axiosConfig )
+    const body = {fname:fname, lname:lname,email:email, password:password }
+     Axios.post('http://localhost:3001/api/create', body , axiosConfiguration )
       .then(()=>{
           console.log("successfull insert ")
       }).catch( ()=>{
@@ -101,14 +100,27 @@ function App() {
   const UpdateButton = (evt)=>{
   
     alert("Update Button")
+    const body = {fname:fname, lname:lname,email:email, password:password }
+    Axios.post('http://localhost:3001/api/update', body , axiosConfiguration )
+     .then(()=>{
+         console.log("successfull update ")
+     }).catch( ()=>{
+         alert("error")
+     })
     
   }
   
   
   const DeleteButton = (evt)=>{
   
-  
-    alert("Delete Button")
+    alert("Deletion Button")
+    const body = {fname:fname, lname:lname,email:email, password:password }
+    Axios.post('http://localhost:3001/api/delete', body , axiosConfiguration )
+     .then(()=>{
+         console.log("successfull delete ")
+     }).catch( ()=>{
+         alert("error")
+     })
 
   }
   
