@@ -204,6 +204,108 @@ app.get('/api/read', (req,res)=>{
 
 })
 
+app.post('/api/update', (req,res) =>{
+  const fname = req.body.fname
+  const lname = req.body.lname
+  const email = req.body.email
+  const password = req.body.password
+  const Schema = mongoose.Schema
+
+  const membersSchema = new Schema(
+    {
+       fname: String,
+       lname: String,
+       email: String,
+       password: String
+    }
+
+  )
+
+  const filter = {email: email }
+  //const options = {upsert: true }
+  const options = {update: true }
+  
+  const updateDoc = {
+     $set: {
+        fname: fname,
+        lname: lname,
+        email: email,
+        password: password
+
+     }
+
+  }
+  
+  async function run ( ){
+
+    const client = new MongoClient( mongodb_url )
+    try{
+      const database = client.db("crud")
+      const haiku = database.collection("members")
+
+      await client.connect();
+      // Send a ping to confirm a successful connection
+      await client.db("crud").command({ ping: 1 });
+      console.log("Pinged your deployment. You successfully connected to MongoDB!");
+      const result = await haiku.updateOne(filter, updateDoc, options);
+      
+      console.log("*******")
+      console.log( result )
+      console.log( result.upsertedId )      
+      console.log("*******")
+
+    }finally{
+
+
+
+
+      console.log("api/update")
+      console.log("data: " + fname + " " + lname + " " + email + " " + password)
+  
+    }
+
+ 
+  }
+
+
+   run().catch( console.dir )
+
+})
+
+app.post('/api/delete', (req,res) =>{
+
+  const email = req.body.email
+  const options = {delete: true }
+
+  const updateDoc = {
+           email:{
+            $eq: email
+           }
+
+  }
+  
+  const client = new MongoClient( mongodb_url )
+  async function run(){
+    const database = client.db("crud")
+    const haiku = database.collection("members")
+    const filter = {email: email }
+
+    try{
+      await client.connect();
+      const result = await haiku.deleteOne(filter, updateDoc, options);
+
+    }finally{
+      console.log("*********** ")
+      console.log("deleted: " + email )
+      console.log("*********** ")
+    }
+
+  }
+
+  run().catch( console.dir() )
+
+})
+
 app.post('/api/create', (req,res)=>{
 
   const fname = req.body.fname
