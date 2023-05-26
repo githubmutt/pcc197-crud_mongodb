@@ -65,8 +65,8 @@ function App() {
 
  const CreateButton = (evt) => {
     
-    console.log("Submit: " + fname + " " + lname + " " + email + " " + password )
-
+    console.log("Createt: " + fname + " " + lname + " " + email + " " + password )
+    alert("Create Button")
     const body = {fname:fname, lname:lname,email:email, password:password }
      Axios.post('http://localhost:3001/api/create', body , axiosConfiguration )
       .then(()=>{
@@ -90,7 +90,8 @@ function App() {
      Axios.get('http://localhost:3001/api/read',  axiosConfig )
      .then((response)=>{
          console.log("successfull read")
-         console.log( response.data)
+         console.log( response.data )
+         setStudents( response.data )
      }).catch( ()=>{
          alert("error")
      })
@@ -99,8 +100,10 @@ function App() {
   
   const UpdateButton = (evt)=>{
   
-    alert("Update Button")
+
     const body = {fname:fname, lname:lname,email:email, password:password }
+    alert("Update "+ email)
+
     Axios.post('http://localhost:3001/api/update', body , axiosConfiguration )
      .then(()=>{
          console.log("successfull update ")
@@ -113,8 +116,9 @@ function App() {
   
   const DeleteButton = (evt)=>{
   
-    alert("Deletion Button")
     const body = {fname:fname, lname:lname,email:email, password:password }
+    alert("Delete " + email)
+
     Axios.post('http://localhost:3001/api/delete', body , axiosConfiguration )
      .then(()=>{
          console.log("successfull delete ")
